@@ -1,15 +1,17 @@
 import Logo from "./components/Logo"
 import OptionList from "./components/OptionList"
+import Navbar from "./components/Navbar"
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <Navbar />
         <Logo />
         <OptionList />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Welcome
         </p>
         <a
           className="App-link"
