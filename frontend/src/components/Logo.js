@@ -3,7 +3,7 @@ import logoVbrain from "../assets/logo_vbrain.png";
 
 function Logo() {
     return (
-        <img src={logoVbrain} alt="VBrain logo" className="ui rounded massive image" />
+        <img src={logoVbrain} alt="VBrain logo" className="ui rounded massive image center" />
     )
 }
 

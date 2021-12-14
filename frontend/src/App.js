@@ -1,6 +1,10 @@
-import Logo from "./components/Logo"
-import OptionList from "./components/OptionList"
 import Navbar from "./components/Navbar"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Home from "./pages/Home"
+import Login from "./pages/Login"
+import NotFound from "./pages/NotFound"
+import Tutorial from "./pages/Tutorial"
+import UsefulLink from "./pages/UsefulLink"
 import './App.css';
 
 function App() {
@@ -8,11 +12,20 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Navbar />
-        <Logo />
-        <OptionList />
-        <p>
+        <Home />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />}>
+            </Route>
+            <Route path="/login" element={<Login />} />
+            <Route path="/tutorial" element={<Tutorial />} />
+            <Route path="/useful-links" element={<UsefulLink />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+        {/* <p>
           Welcome
-        </p>
+        </p> */}
         <a
           className="App-link"
           href="https://reactjs.org"
