@@ -5,6 +5,11 @@ function OptionList() {
     const optionList = [
         {
             "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Noto_Emoji_KitKat_263a.svg/1024px-Noto_Emoji_KitKat_263a.svg.png",
+            "name": "login",
+            "id": uuid()
+        },
+        {
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Noto_Emoji_KitKat_263a.svg/1024px-Noto_Emoji_KitKat_263a.svg.png",
             "name": "accuistition",
             "id": uuid()
         },
@@ -16,11 +21,6 @@ function OptionList() {
         {
             "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Noto_Emoji_KitKat_263a.svg/1024px-Noto_Emoji_KitKat_263a.svg.png",
             "name": "links",
-            "id": uuid()
-        },
-        {
-            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Noto_Emoji_KitKat_263a.svg/1024px-Noto_Emoji_KitKat_263a.svg.png",
-            "name": "login",
             "id": uuid()
         },
         {
