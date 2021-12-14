@@ -4,7 +4,7 @@ import OptionList from "../components/OptionList"
 
 function Home() {
     return (
-        <div style={{ textAlign: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
             <Logo />
             <OptionList />
         </div>
