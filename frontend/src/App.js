@@ -12,20 +12,15 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Navbar />
-        <Home />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Home />}>
-            </Route>
+            <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/tutorial" element={<Tutorial />} />
             <Route path="/useful-links" element={<UsefulLink />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
-        {/* <p>
-          Welcome
-        </p> */}
         <a
           className="App-link"
           href="https://reactjs.org"

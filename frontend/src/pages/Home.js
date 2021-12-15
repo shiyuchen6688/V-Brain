@@ -7,6 +7,7 @@ function Home() {
         <div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
             <Logo />
             <OptionList />
+            <p> Welcome</p>
         </div>
     )
 }
