@@ -1,14 +1,15 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 
 function Option(props) {
     const { image, name } = props
     return (
         <div>
-            <button class="ui button">
+            <Link to={"/" + name} class="ui button" >
                 <img src={image} alt={name} className="ui small image"></img>
                 {name}
-            </button>
+            </Link>
         </div>
     )
 }

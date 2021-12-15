@@ -25,3 +25,7 @@ To build the application:
 ```
 npm run build
 ```
+
+### Todo List
+
+- add pages to options
