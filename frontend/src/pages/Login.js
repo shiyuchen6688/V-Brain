@@ -36,14 +36,14 @@ function LoginForm() {
 
             <div>
                 <label>Forget your password?</label>
-                <Link to="reset-password" className="ui button" style={{ marginTop: "1em" }}>Reset Password</Link>
+                <Link to="/reset-password" className="ui button" style={{ marginTop: "1em" }}>Reset Password</Link>
             </div>
 
             <div class="ui divider"></div>
 
             <div>
                 <label>Have not registered yet?</label>
-                <Link to="reset-password" className="ui button" style={{ marginTop: "1em" }}>Register for an account</Link>
+                <Link to="/register" className="ui button" style={{ marginTop: "1em" }}>Register for an account</Link>
             </div>
         </div>
     )

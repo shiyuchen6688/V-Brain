@@ -9,6 +9,8 @@ import Accuisition from "./pages/Accuisition"
 import Browse from "./pages/Browse"
 import Resources from "./pages/Resources"
 import VBrainSequences from "./pages/VBrainSequences"
+import ResetPassword from "./pages/ResetPassword"
+import Register from "./pages/Register"
 import './App.css';
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
             <Route path="/browse" element={<Browse />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/vbrain-sequences" element={<VBrainSequences />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
