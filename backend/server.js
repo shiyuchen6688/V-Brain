@@ -13,6 +13,9 @@ app.use(cors(corsOption))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
+const { Sequelize, sequelize, userModel } = require("./models/index.js")
+sequelize.sync();  // Sync all defined models to the DB
+
 app.get("/", (req, res) => {
     res.json({ message: "welcome to the server" })
 })
