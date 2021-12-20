@@ -1,8 +1,10 @@
 var express = require("express")
 var cors = require("cors");
 const { stringify } = require("nodemon/lib/utils");
-// require("express-async-errors")
+require("express-async-errors")
 const errorHandlerMiddleware = require("./middlewares/error-handler")
+const user = require("./routes/user.js")
+const auth = require("./auth")
 
 const app = express();
 
@@ -15,12 +17,19 @@ app.use(cors(corsOption))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
-const { Sequelize, sequelize, userModel } = require("./models/index.js")
+const { Sequelize, sequelize, userModel } = require("./models/index.js");
 sequelize.sync();  // Sync all defined models to the DB
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res, next) => {
     res.json({ message: "welcome to the server" })
 })
+
+
+
+
+app.use("/auth", auth)
+app.use("/api/v1/users", user)
+
 
 
 
