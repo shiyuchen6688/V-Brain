@@ -44,7 +44,7 @@ router.post("/login", (req, res, next) => {
             res.cookie('vbrain-login-cookie', token, {
                 httpOnly: true,
                 maxAge: 2 * 60 * 3600 * 1000,
-                secure: true,
+                //secure: true, // TODO: enable this in deployment
                 signed: true
             })
             res.status(200).json(loginResult)
