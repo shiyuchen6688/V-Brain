@@ -1,5 +1,6 @@
 import React, { useState } from "react"
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios"
 
 
 export default function Register() {
@@ -26,21 +27,23 @@ function RegisterForm() {
         }))
     }
 
+    let navigate = useNavigate();
+
     // TODO: add other properties into the post data
     // handle submit of registration form
     const handleSubmit = (e) => {
         e.preventDefault()
-        axios.post(apiURL, inputs)
+        axios.post(apiRegisterURL, inputs)
             .then((response) => {
-                console.log(response)
-                if (response.success === "true") {
+                console.log("inside handleSubmiet")
+                alert(JSON.stringify(response))
+                if (response.data.success === "true") {
                     // redirect to login page
-                    let history = useHistory();
-                    history.push("/login")
+                    navigate('/navigate');
 
                 } else {
                     // ask user to try again
-                    alart(response.message)
+                    alert(response.data.message)
                 }
 
             })
@@ -71,7 +74,7 @@ function RegisterForm() {
 
                 <div className="field">
                     <label>Username (email address)</label>
-                    <input type="text" name="username" value={inputs.username || ""} onChange={handleChange} />
+                    <input type="text" name="email" value={inputs.email || ""} onChange={handleChange} />
                 </div>
 
                 <div className="field">
