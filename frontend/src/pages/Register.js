@@ -11,7 +11,7 @@ export default function Register() {
     );
 }
 
-const apiURL = "http://localhost:8080/";
+const apiRegisterURL = "http://localhost:8080/auth/register";
 
 function RegisterForm() {
     const [inputs, setInputs] = useState({});

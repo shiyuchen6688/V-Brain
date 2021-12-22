@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs')
 
 // create new user in database
 createUser = (requestBody) => {
-    console.log(requestBody) // testing
+    console.log(requestBody);// testing
 
     return new Promise(function (resolve, reject) {
         // validate request
@@ -27,42 +27,48 @@ createUser = (requestBody) => {
             })
         }
 
-        if (alreadyExist(requestBody.email)) {
-            resolve({
-                success: "false",
-                message: "user email already exist, please log in"
-            })
-        }
-
-        // hash password by 5 round
-        bcrypt.hash(requestBody.password, 5)
-            .then((hash) => {
-                console.log("hashed")
-                const newUser = {
-                    email: requestBody.email,
-                    password: hash
+        alreadyExist(requestBody.email)
+            .then((exist) => {
+                if (exist) {
+                    return resolve({
+                        success: "false",
+                        message: `user email ${requestBody.email} already exist, please log in`
+                    })
                 }
-                return User.create(newUser)
+                // hash password by 5 round
+                bcrypt.hash(requestBody.password, 5)
+                    .then((hash) => {
+                        console.log("hashed")
+                        const newUser = {
+                            email: requestBody.email,
+                            password: hash
+                        }
+                        return User.create(newUser)
+                    })
+                    .then((newUser) => {
+                        console.log("new User created in database")
+                        resolve({
+                            success: "true",
+                            message: "user created",
+                            user: newUser
+                        })
+                    })
+                    .catch((err) => {
+                        resolve({
+                            success: "false",
+                            message: "error is throwed",
+                            error: err
+                        })
+                    })
             })
-            .then((newUser) => {
-                console.log("new User created in database")
-                resolve({
-                    success: "true",
-                    message: "user created",
-                    user: newUser
-                })
+            .catch((error) => {
+                reject(error)
             })
-            .catch((err) => {
-                resolve({
-                    success: "false",
-                    message: "error is throwed",
-                    error: err
-                })
-            })
-
-
     })
+
 }
+
+
 
 
 // verify user information
@@ -86,8 +92,17 @@ function validUser(requestBody) {
 }
 
 // check if registerEmail already exist in our database
+// return a promise that resolve to a boolean
 function alreadyExist(registerEmail) {
-    return (findOneUserByEmail(registerEmail) !== null); // TODO: finish this
+    return findOneUserByEmail(registerEmail)
+        .then((existingUser) => {
+            console.log(existingUser)
+            return (existingUser !== null)
+        })
+        .catch((error) => {
+            throw error;
+        })
+
 }
 
 // log in to existing user account
@@ -99,13 +114,13 @@ login = (requestBody) => {
         // validate request
         let userInfoValidation = validUser(requestBody)
         if (userInfoValidation.length !== 0) {
-            resolve({
+            return resolve({
                 success: "false",
                 message: `login information is not valid ${userInfoValidation}`
             })
         }
         if (!alreadyExist(requestBody.email)) {
-            resolve({
+            return resolve({
                 success: "false",
                 message: "User name does not exist, please register"
             })
@@ -117,12 +132,12 @@ login = (requestBody) => {
         bycrpt.compare(loginUser.password, password)
             .then((passwordMatched) => {
                 if (passwordMatched) {
-                    resolve({
+                    return resolve({
                         success: "true",
                         message: "You've logged into your account"
                     })
                 } else {
-                    resolve({
+                    return resolve({
                         success: "false",
                         message: "Password does not match with username, please try again"
                     })

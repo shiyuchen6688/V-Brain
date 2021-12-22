@@ -19,7 +19,6 @@ router.post("/register", (req, res, next) => {
     console.log("register handler fired")
     user.createUser(req.body).then((result) => {
         if (result.success === "true") {
-
             res.status(200).json(result)
         } else {
             res.status(400).json(result)
