@@ -1,4 +1,4 @@
-const res = require("express/lib/response")
+
 const { Sequelize, sequelize, userModel } = require("../models/index")
 const Op = Sequelize.Op
 const User = userModel
@@ -91,7 +91,7 @@ function alreadyExist(registerEmail) {
 }
 
 // log in to existing user account
-login = (requestBody) {
+login = (requestBody) => {
     console.log(requestBody) // testing
 
 
@@ -117,8 +117,10 @@ login = (requestBody) {
         bycrpt.compare(loginUser.password, password)
             .then((passwordMatched) => {
                 if (passwordMatched) {
-                    // correct password
-                    // TODO: login user using jwt
+                    resolve({
+                        success: "true",
+                        message: "You've logged into your account"
+                    })
                 } else {
                     resolve({
                         success: "false",
