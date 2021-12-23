@@ -29,24 +29,28 @@ router.post("/register", (req, res, next) => {
 
 // handle login request
 router.post("/login", (req, res, next) => {
-    console.lof("login handler fired")
+    console.log("login handler fired")
+    console.log(req.body)
     user.login(req.body).then((loginResult) => {
         if (loginResult.success === 'true') {
             // logged in, give them jwt token
             // create jwt token
+            console.log("successed login")
             const token = jwt.sign(
                 { uesrname: req.body.email },
-                provess.env.JWT_KEY,
+                process.env.JWT_KEY,
                 {
                     expiresIn: "2h"
                 }
             );
+            console.log("token generated")
             res.cookie('vbrain-login-cookie', token, {
                 httpOnly: true,
-                maxAge: 2 * 60 * 3600 * 1000,
+                maxAge: (2 * 60 * 3600 * 1000),
                 //secure: true, // TODO: enable this in deployment
-                signed: true
+                // signed: true
             })
+            console.log("cookie added")
             res.status(200).json(loginResult)
         } else {
             // something is not working, no permission

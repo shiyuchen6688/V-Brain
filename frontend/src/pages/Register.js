@@ -35,11 +35,10 @@ function RegisterForm() {
         e.preventDefault()
         axios.post(apiRegisterURL, inputs)
             .then((response) => {
-                console.log("inside handleSubmiet")
-                alert(JSON.stringify(response))
+                // alert(JSON.stringify(response))
                 if (response.data.success === "true") {
                     // redirect to login page
-                    navigate('/navigate');
+                    navigate('/login');
 
                 } else {
                     // ask user to try again

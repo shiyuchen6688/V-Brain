@@ -29,6 +29,7 @@ npm run build
 ### Todo List
 
 - log in functionality
+
   - hash password :white_check_mark:
   - able to create the user in the database :white_check_mark:
   - no 2 user can have duplicate email :white_check_mark:
@@ -38,3 +39,6 @@ npm run build
   - fail when email/password not valid
   - fail when email not registered yet
   - instead of sending error messages indivisually, try to throw error and handle by a single error handler
+
+- user profile page
+  - url to user profile page is http://localhost:3000/user-profile/userEmail

@@ -107,7 +107,7 @@ function alreadyExist(registerEmail) {
 
 // log in to existing user account
 login = (requestBody) => {
-    console.log(requestBody) // testing
+    console.log("in login") // testing
 
 
     return new Promise(function (resolve, reject) {
@@ -127,22 +127,44 @@ login = (requestBody) => {
         }
 
         const { email, password } = requestBody
-        const loginUser = findOneUserByEmail(email)
-        // verify password
-        bycrpt.compare(loginUser.password, password)
-            .then((passwordMatched) => {
-                if (passwordMatched) {
-                    return resolve({
-                        success: "true",
-                        message: "You've logged into your account"
-                    })
-                } else {
-                    return resolve({
-                        success: "false",
-                        message: "Password does not match with username, please try again"
-                    })
-                }
-            })
+
+        findOneUserByEmail(email).then((loginUser) => {
+            // verify password
+            console.log(loginUser.password)
+            console.log(password)
+            // compare(password from client, password hash in db)
+            return bcrypt.compare(password, loginUser.password)
+        }).then((passwordMatched) => {
+            console.log("password matched or not")
+            console.log(passwordMatched)
+            if (passwordMatched) {
+                console.log("password matched")
+                return resolve({
+                    success: "true",
+                    message: "You've logged into your account",
+                    userEmail: email
+                })
+            } else {
+                console.log("password failed")
+                return resolve({
+                    success: "false",
+                    message: "Password does not match with username, please try again"
+                })
+            }
+        }).then((passwordMatched) => {
+            if (passwordMatched) {
+                return resolve({
+                    success: "true",
+                    message: "You've logged into your account"
+                })
+            } else {
+                return resolve({
+                    success: "false",
+                    message: "Password does not match with username, please try again"
+                })
+            }
+        })
+
     })
 }
 
@@ -198,6 +220,7 @@ deleteOneUser = (req, res) => {
 
 module.exports = {
     createUser,
+    login,
     getOneUser,
     getAllUser,
     updateOneUser,

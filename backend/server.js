@@ -8,12 +8,13 @@ const auth = require("./auth")
 
 const app = express();
 
-const corsOption = {
-    origin: "http://localhost:3000",
-    optionsSuccessStatus: 200
-}
+// const corsOption = {
+//     origin: "http://localhost:3000",
+//     optionsSuccessStatus: 200
+// }
 
-app.use(cors(corsOption))
+// you hace to set credentials option for the cookie to work at the front end
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
