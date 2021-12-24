@@ -11,6 +11,9 @@ import Resources from "./pages/Resources"
 import VBrainSequences from "./pages/VBrainSequences"
 import ResetPassword from "./pages/ResetPassword"
 import Register from "./pages/Register"
+import UserProfile from "./pages/UserProfile"
+import UserStudies from "./pages/UserStudies"
+import UserProfile from "./pages/UserProfile"
 import './App.css';
 
 function App() {
@@ -30,6 +33,10 @@ function App() {
             <Route path="/vbrain-sequences" element={<VBrainSequences />} />
             <Route path="/register" element={<Register />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/user-profile/:email" element={<UserProfile />}>
+              <Route path="register-study" element={<RegisterStudy />} />
+              <Route path="studies" element={<UserStudies />} />
+            </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
