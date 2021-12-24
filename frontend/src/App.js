@@ -11,9 +11,8 @@ import Resources from "./pages/Resources"
 import VBrainSequences from "./pages/VBrainSequences"
 import ResetPassword from "./pages/ResetPassword"
 import Register from "./pages/Register"
-import UserProfile from "./pages/UserProfile"
-import UserStudies from "./pages/UserStudies"
-import UserProfile from "./pages/UserProfile"
+import UserHome from "./pages/UserHome"
+
 import './App.css';
 
 function App() {
@@ -33,16 +32,13 @@ function App() {
             <Route path="/vbrain-sequences" element={<VBrainSequences />} />
             <Route path="/register" element={<Register />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/user-profile/:email" element={<UserProfile />}>
-              <Route path="register-study" element={<RegisterStudy />} />
-              <Route path="studies" element={<UserStudies />} />
-            </Route>
+            <Route path="/user-profile/:email/*" element={<UserHome />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </header>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw==" crossOrigin="anonymous" referrerPolicy="no-referrer"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossOrigin="anonymous" referrerPolicy="no-referrer" />
     </div>
   );
 }
