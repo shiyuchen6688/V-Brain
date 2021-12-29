@@ -71,6 +71,7 @@ function LoginForm() {
                     </div>
 
                     <input type="submit" className="ui button" />
+					<Link to="/user-page"><button className="ui button">My Profile</button></Link>
                 </form>
             </div>
 

@@ -12,8 +12,10 @@ import VBrainSequences from "./pages/VBrainSequences"
 import ResetPassword from "./pages/ResetPassword"
 import Register from "./pages/Register"
 import UserHome from "./pages/UserHome"
-
+import UserPage from "./pages/UserPage"
+import StudyRegisterationForm from "./pages/StudyRegisterationForm"
 import './App.css';
+import React, { Component }  from 'react';
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/user-profile/:email/*" element={<UserHome />} />
+            <Route path="/user-page" element={<UserPage />} />
+            <Route path="/study-registeration-form" element={<StudyRegisterationForm />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
