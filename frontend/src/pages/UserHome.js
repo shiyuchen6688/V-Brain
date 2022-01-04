@@ -2,12 +2,16 @@ import React from "react"
 import { useParams, Link, Routes, Route } from "react-router-dom"
 import UserStudies from "./UserStudies"
 import RegisterStudy from "./RegisterStudy"
+import axios from "axios"
+
+const apiURL = "http://localhost:8080/api.v1.users";
 
 export default function UserHome() {
+    let { email } = useParams()
 
     return (
         <div className="ui container">
-            <h1 class="ui dividing header inverted">My account</h1>
+            <h1 class="ui dividing header inverted">{getUserName(email)}</h1>
 
             <Routes>
                 <Route path="/" element={<UserProfile />} />
@@ -17,6 +21,11 @@ export default function UserHome() {
 
         </div>
     )
+}
+
+async function getUserName(email) {
+    const user = await xios.get(`${apiURL}/${email}`)
+
 }
 
 function UserProfile() {

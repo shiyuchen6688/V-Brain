@@ -11,9 +11,15 @@ module.exports = (sequelize, Sequelize) => {
         password: {
             type: Sequelize.STRING,
             allowNull: false,
+        },
+        firstName: {
+            type: Sequelize.STRING,
+            allowNull: true,
+        },
+        lastname: {
+            type: Sequelize.STRING,
+            allowNull: true,
         }
-        // TODO: more informatin to be added here
-        // TODO: 1 to many or constraint like that
     })
     return User
 }
