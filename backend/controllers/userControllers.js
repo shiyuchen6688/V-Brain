@@ -3,6 +3,7 @@ const { Sequelize, sequelize, userModel } = require("../models/index")
 const Op = Sequelize.Op
 const User = userModel
 const bcrypt = require('bcryptjs')
+const res = require("express/lib/response")
 
 // create new user in database
 createUser = (requestBody) => {
@@ -41,7 +42,9 @@ createUser = (requestBody) => {
                         console.log("hashed")
                         const newUser = {
                             email: requestBody.email,
-                            password: hash
+                            password: hash,
+                            firstname: requestBody.firstname,
+                            lastname: requestBody.lastname,
                         }
                         return User.create(newUser)
                     })
@@ -100,6 +103,7 @@ function alreadyExist(registerEmail) {
             return (existingUser !== null)
         })
         .catch((error) => {
+            console.log(`already Exist failed with error ${error}`)
             throw error;
         })
 
@@ -172,15 +176,22 @@ login = (requestBody) => {
 // find all users in database
 getAllUser = (req, res) => {
     // console.log(User)
-    User.findAll()
-        .then(allUsers => {
-            res.status(200).json(allUsers)
-        })
+    try {
+        User.findAll()
+            .then(allUsers => {
+                res.status(200).json(allUsers)
+            })
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 // find one specific user in database
 getOneUser = (req, res) => {
-    findOneUserByEmail(req.body.email)
+    console.log(req.originalUrl)
+    console.log(req.params)
+    // req.params.id is the email
+    findOneUserByEmail(req.params.id)
         .then((findRes) => {
             if (findRes === null) {
                 res.status(400).send({
@@ -200,20 +211,34 @@ getOneUser = (req, res) => {
         })
 }
 
+// not the route handler, helper that only return promise
 function findOneUserByEmail(email) {
-    return User.findOne({ where: { email: email } });
+    return User.findOne({ where: { email: email } })
 }
+
 
 // update information about one user
 updateOneUser = (req, res) => {
 }
 
 // delete all user from database
-deleteAllUser = (req, res) => {
+deleteAllUser = async (req, res) => {
+    const result = await User.destroy({
+        truncate: true
+    });
+    res.status(200).json({
+        numberOfRowDeleted: result
+    })
 }
 
 // delete record of a user from database
 deleteOneUser = (req, res) => {
+}
+
+dropUserTable = async (req, res) => {
+    console.log("dropUserTable fired")
+    await User.drop()
+    res.status(200).send("user table is droped")
 }
 
 // TODO: get permission or other useful info?
@@ -225,7 +250,8 @@ module.exports = {
     getAllUser,
     updateOneUser,
     deleteAllUser,
-    deleteOneUser
+    deleteOneUser,
+    dropUserTable,
 }
 
 
