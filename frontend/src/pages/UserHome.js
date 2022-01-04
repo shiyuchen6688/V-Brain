@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, Routes, Route } from "react-router-dom"
-import UserStudies from "./UserStudies"
-import RegisterStudy from "./RegisterStudy"
+import UserStudies from "../components/UserStudies"
+import CreateStudy from "./CreateStudy"
+import CreateProject from "./CreateStudy"
 import axios from "axios"
 
 const apiURL = "http://localhost:8080/api/v1/users";
@@ -15,12 +16,12 @@ export default function UserHome() {
         <div className="ui container">
             <FullName email={email} />
 
-
             <Routes>
                 <Route path="/" element={<UserProfile />} />
-                <Route path="register-study" element={<RegisterStudy />} />
-                <Route path="studies/*" element={<UserStudies />} />
+                <Route path="/create-study" element={<CreateStudy />} />
+                <Route path="/create-project" element={<CreateProject />} />
             </Routes>
+
 
         </div>
     )
@@ -43,20 +44,18 @@ function FullName(props) {
     )
 }
 
+// home page of user home
 function UserProfile() {
-    let { email } = useParams()
-
-    console.log(email)
-
     return (
-        <div className="ui container">
-            <div className="row">
-                <Link to="register-study" className="ui button large">Register a new study</Link>
+        <div>
+            <UserStudies />
+            <div class="ui divider"></div>
+            <div class="ui buttons">
+                <Link to="create-study" className="ui button">Create Study</Link>
+                <div class="or"></div>
+                <Link to="create-project" className="ui button">Create Project</Link>
             </div>
-            <div className="row" style={{ marginTop: "1em" }}>
-                <Link to="studies" className="ui button large">My studies</Link>
-            </div>
+
         </div>
     )
-
 }
