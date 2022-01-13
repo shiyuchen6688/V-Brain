@@ -131,6 +131,7 @@ login = (requestBody) => {
         }
 
         const { email, password } = requestBody
+        console.log(email, password)
 
         findOneUserByEmail(email).then((loginUser) => {
             // verify password
@@ -213,6 +214,7 @@ getOneUser = (req, res) => {
 
 // not the route handler, helper that only return promise
 function findOneUserByEmail(email) {
+    console.log("findOneUserByEmail", email)
     return User.findOne({ where: { email: email } })
 }
 
