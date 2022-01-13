@@ -1,13 +1,21 @@
 import React from "react"
 import { useParams, Link, Routes, Route } from "react-router-dom"
-import StudyHome from "./StudyHome"
+import StudyHome from "../pages/StudyHome"
 
 export default function UserStudies() {
     // temporary for testing usage
     const studies = [{
-        name: "aasdfasfsadf"
+        name: "study 1"
     }, {
-        name: "b"
+        name: "study 2"
+    }, {
+        name: "study 3"
+    }
+        , {
+        name: "study 4"
+    }
+        , {
+        name: "study 5"
     }]
     return (
         <div>
@@ -25,13 +33,12 @@ function StudyList(props) {
 
     return (
         <div>
-            <h2>My Studies:</h2>
             <div class="ui vertical buttons">
 
                 {
                     studies.map((study) => {
                         return (
-                            <Link to=":studyid" className="medium ui button" style={{ marginTop: "0.3em" }}>{study.name}</Link>
+                            <Link to=":studyid" className="ui massive button primary" style={{ marginTop: "0.3em" }}>{study.name}</Link>
                         )
                     })
                 }
