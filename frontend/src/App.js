@@ -1,4 +1,4 @@
-import Navbar from "./components/Navbar"
+import NavigationBar from "./components/NavigationBar"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
@@ -15,13 +15,15 @@ import UserHome from "./pages/UserHome"
 import UserPage from "./pages/UserPage"
 import StudyRegisterationForm from "./pages/StudyRegisterationForm"
 import './App.css';
-import React, { Component }  from 'react';
+import React from 'react';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Navbar />
+        
+        <NavigationBar  />
+        
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -35,7 +37,9 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/user-profile/:email/*" element={<UserHome />} />
+            
             <Route path="/user-page" element={<UserPage />} />
+            
             <Route path="/study-registeration-form" element={<StudyRegisterationForm />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
