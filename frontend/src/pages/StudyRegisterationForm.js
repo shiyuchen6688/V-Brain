@@ -1,6 +1,4 @@
-import React, { Style } from 'react';
-import {table} from 'react-bootstrap' 
-
+import React, { Style, useState } from 'react';
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import { v4 as uuid } from "uuid"
 
@@ -16,16 +14,6 @@ export default class RegisterStudy extends React.Component{
 		formHorizontalSection: {display: "flex", justifyContent: "space-between"},
 		list: {width: "100%", overflowY: "scroll", height: "500px"},
 	}
-
-	studyParameters = {
-		studyTitle: "",
-		studyAbbreviation: "",
-		principalInvestigator: "",
-		principalInvestigatorEmail: "",
-		permission: 'Public',
-		funding: "",
-		dataCollectionStatus: ""
-	};
 
 	radiotracerList = [
 		{"text": "Adenosine A1 [11C]MPDX", "id": uuid()},			
@@ -405,6 +393,8 @@ export default class RegisterStudy extends React.Component{
     constructor(props){
         super(props);
 
+		this.state = {};
+
 		// This binding is necessary to make `this` work in the callback    
 		this.uncheckAll = this.uncheckAll.bind(this);
 		this.submitForm = this.submitForm.bind(this);
@@ -415,6 +405,8 @@ export default class RegisterStudy extends React.Component{
 		this.addOtherStudyDataTypeButtonClicked = this.addOtherStudyDataTypeButtonClicked.bind(this);
 		this.addOtherClinicalAreaButtonClicked = this.addOtherClinicalAreaButtonClicked.bind(this);
 		this.addOtherSiteButtonClicked = this.addOtherSiteButtonClicked.bind(this);
+
+		this.handleChanges = this.handleChanges.bind(this);
 
 	}
 
@@ -429,14 +421,33 @@ export default class RegisterStudy extends React.Component{
 		}
 	}
 
-	submitForm(){
+	submitForm(e){
 		console.log("submitForm invoked");
-		
+		e.preventDefault()
+        /*axios.post(apiRegisterURL, inputs)
+            .then((response) => {
+                // alert(JSON.stringify(response))
+                if (response.data.success === "true") {
+                    // redirect to login page
+                    navigate('/login');
+
+                } else {
+                    // ask user to try again
+                    alert(response.data.message)
+                }
+
+            })
+            .catch((error) => {
+                alert(error)
+            })
+			*/
+
+
 		var formIsValid = true;
 		
-		if(document.getElementById("Study title/text").value.length == 0) formIsValid = false;
-		if(document.getElementById("Principal investigator/text").value.length == 0) formIsValid = false;
-		if(document.getElementById("Principal investigator Email/text").value.length == 0) formIsValid = false;
+		if(!this.state.studyTitle ) formIsValid = false;
+		if(!this.state.principalInvestigator ) formIsValid = false;
+		if(!this.state.principalInvestigatorEmail ) formIsValid = false;
 
 		if(formIsValid == false)
 		{
@@ -449,8 +460,10 @@ export default class RegisterStudy extends React.Component{
 			if (window.confirm("Do you confirm your request to register \"" + document.getElementById("Study title/text").value + "\"")){
 				window.confirm("Your request for registering the study \"" + document.getElementById("Study title/text").value
 					+ "\" has been sent to web administrator successfully, you will  recieve email about the status of registration");
+					console.log(this.state)
 				}
 
+				/*
 				var inputs, index;
 				inputs = document.getElementsByTagName('input');
 				for (index = 0; index < inputs.length; ++index) {
@@ -460,6 +473,7 @@ export default class RegisterStudy extends React.Component{
 					}
 
 				}
+				*/
 
 			//document.getElementById("Clear Form Button").click();
 		}
@@ -472,11 +486,14 @@ export default class RegisterStudy extends React.Component{
 		if (window.confirm("Do you want to clear form?")){
 			console.log("User confirmed to clear form");
 			
-			
+			this.setState({});
+
+			/*
 			document.getElementById("Study title/text").value = "";
 			document.getElementById("Study abbreviation/text").value = "";
 			document.getElementById("Principal investigator/text").value = "";
 			document.getElementById("Principal investigator Email/text").value = "";
+			*/
 
 			document.getElementById("Permission/Public").ckeched = false;
 			document.getElementById("Permission/Restricted").ckeched = false;
@@ -854,7 +871,48 @@ export default class RegisterStudy extends React.Component{
 		newItem.focus();
 	}
 
+	handleChanges(e){
+
+		console.log("*************  handleChanges invoked");
+		const fieldName = e.target.name
+        const newValue = e.target.value
+        console.log(fieldName);
+		console.log(newValue);
+		//var sender = document.getElementsByName(e.target.name)
+		
+		var sender = document.getElementById(e.target.id)
+		console.log(e.target.name);
+		console.log(sender.type);
+		
+		//var x = document.getElementById("Funding field").querySelectorAll(".example");
+
+		if((sender.type == "text") ||(sender.type == "email"))//fieldName == "Funding/National Federal Agency")
+		{
+			this.setState({[fieldName]: newValue});
+		}
+		else if(sender.type == "checkbox") 
+		{
+			console.log( sender.checked);
+			var parent = sender.parentElement;
+			console.log( parent);
+			
+        
+		}
+		else if(sender.type == "radio")
+		{
+			console.log( sender.checked);
+        
+		}
+		console.log(this.state.studyTitle);
+		console.log(this.state.studyAbbreviation);
+		console.log(this.state.principalInvestigator);
+		console.log(this.state.principalInvestigator);
+		console.log(this.state.principalInvestigatorEmail);
+		console.log(this.state["Funding/National Federal Agency"]);
+	}
+
 	render(){
+
 		return (
 		<div style={{width: "80%", textAlign: "left", fontSize:"15px"}}>
 			
@@ -870,22 +928,42 @@ export default class RegisterStudy extends React.Component{
 						<tbody>
 							<tr>
 								<td><label style={{color:"red"}}>* </label><label>Study title:</label></td>
-								<td><input id="Study title/text" style={this.styles.input} type="text"/></td>
+								<td><input id="Study title/text" 
+										style={this.styles.input} 
+										name="studyTitle" 
+										value={this.state.studyTitle || ""} 
+										type="text"
+										onChange={this.handleChanges}/></td>
 							</tr>
 							
 							<tr>
 								<td><label>Study abbreviation:</label></td>
-								<td><input id="Study abbreviation/text" style={this.styles.input} type="text"/></td>
+								<td><input id="Study abbreviation/text" 
+										style={this.styles.input} 
+										name="studyAbbreviation" 
+										value={this.state.studyAbbreviation || ""} 
+										type="text"
+										onChange={this.handleChanges}/></td>
 							</tr>
 							
 							<tr>
 								<td><label style={{color:"red"}}>* </label><label>Principal investigator:</label></td>
-								<td><input id="Principal investigator/text" style={this.styles.input} type="text"/></td>
+								<td><input id="Principal investigator/text" 
+										style={this.styles.input} 
+										name="principalInvestigator" 
+										value={this.state.principalInvestigator || ""} 
+										type="text"
+										onChange={this.handleChanges}/></td>
 							</tr>
 							
 							<tr>
 								<td><label style={{color:"red"}}>* </label><label type="email" >Principal investigator email:</label></td>
-								<td><input id="Principal investigator Email/text" style={this.styles.input} type="text"/></td>
+								<td><input id="Principal investigator Email/text" 
+										style={this.styles.input} 
+										name="principalInvestigatorEmail" 
+										value={this.state.principalInvestigatorEmail || ""} 
+										type="text"
+										onChange={this.handleChanges}/></td>
 							</tr>
 							
 							<tr><td colSpan="2"><hr/></td></tr>
@@ -902,10 +980,15 @@ export default class RegisterStudy extends React.Component{
 							</tr>
 
 							<tr><td colSpan="100"><hr/></td></tr>
-							<tr  style={{verticalAlign: "top"}}>
+							<tr   style={{verticalAlign: "top"}}>
 								<td>Funding:</td>
-								<td >
-									<input style={this.styles.checkBox}  type="checkbox" id="Funding/National Federal Agency"/> National federal agency<br/>
+								<td name="Funding fields">
+									
+									<input style={this.styles.checkBox}  
+									type="checkbox" 
+									id={uuid()}
+									name="Funding/National Federal Agency"
+									onChange={this.handleChanges}/> National federal agency<br/>
 									<input style={this.styles.checkBox}  type="checkbox" id="Funding/Non-Governmental Funding Agency"/> Non-governmental funding agency<br/>
 									<input style={this.styles.checkBox}  type="checkbox" id="Funding/Industry"/> Industry<br/>
 									<input style={this.styles.checkBox}  type="checkbox" id="Funding/Departmental Funds"/> Departmental funds<br/>
@@ -923,7 +1006,7 @@ export default class RegisterStudy extends React.Component{
 
 							<tr>
 								<td>Study specific URL:</td>
-								<td><input id="Study Specific URL/Text" style={this.styles.input}/></td>
+								<td><input id="Study Specific URL/Text" style={this.styles.input} /></td>
 							</tr>
 
 							
@@ -979,7 +1062,7 @@ export default class RegisterStudy extends React.Component{
 									<hr/>
 									<div style={{display: "flex", justifyContent: "space-between"}}>
 										Species:
-										<label>Human<input id="Sample type/Species/Human" name="Species" type="checkbox" style={{margin: 10, transform: "scale(2)"}}/> </label> 
+										<label>Human<input style={this.styles.checkBox} id="Sample type/Species/Human" name="Species" type="checkbox" style={{margin: 10, transform: "scale(2)"} } onChange={this.handleChanges}/> </label> 
 										<label>Non-Human Primate<input id="Sample type/Species/Non-Human Primate" name="Species" type="checkbox" style={{margin: 10, transform: "scale(2)"}}/> </label> 
 										<label>Murine<input id="Sample type/Species/Murine" name="Species" type="checkbox" style={{margin: 10, transform: "scale(2)"}} /> </label> 
 										<label>Other<input id="Sample type/Species/Other" name="Species" type="checkbox" style={{margin: 10, transform: "scale(2)"}} /> </label> 
