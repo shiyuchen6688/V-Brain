@@ -71,6 +71,7 @@ function LoginForm() {
                     </div>
 
                     <input type="submit" className="ui button" />
+					
                 </form>
             </div>
 

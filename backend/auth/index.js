@@ -60,4 +60,18 @@ router.post("/login", (req, res, next) => {
 })
 
 
+// handle study registration submit request
+router.post("/studyRegistration", (req, res, next) => {
+    console.log("study registration handler fired")
+    user.createUser(req.body).then((result) => {
+        if (result.success === "true") {
+            console.log(result)
+            res.status(200).json(result)
+        } else {
+            res.status(400).json(result)
+        }
+    })
+})
+
+
 module.exports = router

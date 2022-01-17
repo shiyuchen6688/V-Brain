@@ -12,14 +12,14 @@ import VBrainSequences from "./pages/VBrainSequences"
 import ResetPassword from "./pages/ResetPassword"
 import Register from "./pages/Register"
 import UserHome from "./pages/UserHome"
-
 import './App.css';
+import React from 'react';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Navbar />
+        <Navbar  />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />

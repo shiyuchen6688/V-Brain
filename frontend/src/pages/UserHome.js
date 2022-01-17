@@ -3,6 +3,7 @@ import { useParams, Link, Routes, Route } from "react-router-dom"
 import UserStudies from "../components/UserStudies"
 import CreateStudy from "./CreateStudy"
 import CreateProject from "./CreateStudy"
+import StudyRegisterationForm from "./StudyRegisterationForm"
 import axios from "axios"
 
 const apiURL = "http://localhost:8080/api/v1/users";
@@ -18,7 +19,7 @@ export default function UserHome() {
 
             <Routes>
                 <Route path="/" element={<UserProfile />} />
-                <Route path="/create-study" element={<CreateStudy />} />
+                <Route path="/create-study" element={<StudyRegisterationForm />} />
                 <Route path="/create-project" element={<CreateProject />} />
             </Routes>
 
