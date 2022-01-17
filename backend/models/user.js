@@ -19,6 +19,10 @@ module.exports = (sequelize, Sequelize) => {
         lastname: {
             type: Sequelize.STRING,
             allowNull: false,
+        },
+        institution: {
+            type: Sequelize.STRING,
+            allowNull: true
         }
     })
     return User

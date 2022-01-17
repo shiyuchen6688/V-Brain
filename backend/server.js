@@ -18,7 +18,7 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
-const { Sequelize, sequelize, userModel } = require("./models/index.js");
+const { Sequelize, sequelize, userModel, studyModel } = require("./models/index.js");
 sequelize.sync();  // Sync all defined models to the DB
 
 app.get("/", (req, res, next) => {
