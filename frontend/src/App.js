@@ -1,4 +1,4 @@
-import NavigationBar from "./components/NavigationBar"
+import Navbar from "./components/Navbar"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
@@ -12,7 +12,6 @@ import VBrainSequences from "./pages/VBrainSequences"
 import ResetPassword from "./pages/ResetPassword"
 import Register from "./pages/Register"
 import UserHome from "./pages/UserHome"
-import StudyRegisterationForm from "./pages/StudyRegisterationForm"
 import './App.css';
 import React from 'react';
 
@@ -20,9 +19,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        
-        <NavigationBar  />
-        
+        <Navbar  />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
