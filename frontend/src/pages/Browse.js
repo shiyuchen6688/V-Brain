@@ -63,18 +63,37 @@ const exampleStudy3 = {
 
 let studies = [exampleStudy1, exampleStudy2, exampleStudy3]
 
+// Filters key and values
+const filterKeys = ["permission", "status", "design", "species"];
+const filterKeyValueMap = new Map();
+filterKeyValueMap.set("permission", ["Public", "Private", "PI approval"])
+filterKeyValueMap.set("status", ["Completed", "Ongoing"])
+filterKeyValueMap.set("design", ["Cross-sectiona", "Longitudinal", "Observational", "Interventional", "Other"])
+filterKeyValueMap.set("species", ["Human", "Non-Human Primate", "Murine", "Other"])
+
+
 
 export default function Browse() {
     return (
-        <div>
+        <div className="ui container">
             <h1>Browse</h1>
             <div className="ui internally celled grid">
                 <div className="row">
-                    <div className="three wide column">
-                        <searchBars />
+                    <div className="sixteen wide column">
+                        <div class="ui form inverted">
+                            <div class="inline field">
+                                <p>Key word search:</p>
+                                <input type="text" placeholder="Key Word" size="50" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="four wide column">
+                        <SearchBars />
                     </div>
 
-                    <div className="thirteen wide column">
+                    <div className="twelve wide column">
                         <StudyInfoList />
                     </div>
                 </div>
@@ -82,6 +101,48 @@ export default function Browse() {
 
         </div>
     )
+}
+
+function SearchBars() {
+    return (
+        <div>
+            <FilterOption filterKey="permission" />
+
+            <div class="ui hidden divider"></div><div class="ui hidden divider"></div>
+
+            <FilterOption filterKey="status" />
+
+            <div class="ui hidden divider"></div><div class="ui hidden divider"></div>
+
+            <FilterOption filterKey="design" />
+
+            <div class="ui hidden divider"></div><div class="ui hidden divider"></div>
+
+            <FilterOption filterKey="species" />
+        </div>
+    )
+}
+
+
+function FilterOption(props) {
+    const { filterKey } = props;
+    const options = filterKeyValueMap.get(filterKey);
+    return (
+        <div>
+            <p style={{ fontSize: "60%" }}>{filterKey}</p>
+            <select className="ui dropdown" style={{ fontSize: "65%" }}>
+                <option value="">{filterKey}</option>
+                {
+
+                    options.map((option, i) => {
+                        return <option key={uuid()} value={String(i)}>{option}</option>
+                    })
+                }
+            </select>
+        </div>
+
+    )
+
 }
 
 function StudyInfoList() {
@@ -129,7 +190,7 @@ function StudyInfo(props) {
     return (
         <div className="ui piled segment" style={{ color: "black" }}>
             {isDefined(tittle) ? <h3>{tittle}</h3> : null}
-            <table class="ui celled table">
+            <table className="ui celled table">
                 <thead>
                     <tr>
                         <th>Name</th>
