@@ -23,6 +23,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         funding: {
             //type: Sequelize.??? (would be a list),
+            type: Sequelize.STRING,
             allowNull: true,
         },
         description:{
@@ -43,14 +44,17 @@ module.exports = (sequelize, Sequelize) => {
         },
         studyDesign: {
             //type: Sequelize.??? (would be a list),
+            type: Sequelize.STRING,
             allowNull: true,
         },
         dataCollectionSites: {
             //type: Sequelize.??? (would be a list),
+            type: Sequelize.STRING,
             allowNull: true,
         },
         sampleTypeSpecies: {
             //type: Sequelize.??? (would be a list),
+            type: Sequelize.STRING,
             allowNull: true,
         },
         healthyIndivisualInSample: {
@@ -59,6 +63,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         clinicalAreaInSample: {
             //type: Sequelize.??? (would be a list),
+            type: Sequelize.STRING,
             allowNull: true,
         }, 
         participantMinAge: {
@@ -75,36 +80,33 @@ module.exports = (sequelize, Sequelize) => {
         },
         dataTypesAvailable:{
             //type: Sequelize.??? (would be a list),
+            type: Sequelize.STRING,
             allowNull: true,
         }, 
         biologicalSamples: {
             //type: Sequelize.??? (would be a list),
+            type: Sequelize.STRING,
             allowNull: true,
         }, 
         imagingMRIs:  {
             //type: Sequelize.??? (would be a list),
+            type: Sequelize.STRING,
             allowNull: true,
         }, 
         imagingPETs:  {
             //type: Sequelize.??? (would be a list),
+            type: Sequelize.STRING,
             allowNull: true,
         }, 
         imagingMRSs:  {
             //type: Sequelize.??? (would be a list),
+            type: Sequelize.STRING,
             allowNull: true,
         }, 
         VBrainSequesncesRadioButtons: {
             type: Sequelize.STRING, // it can be STRING  or BOOLEAN
             allowNull: true,
         },
-
-
-
-
-
-
-
-
     })
     return Study
 }

@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const user = require("../controllers/userControllers")
+const study = require("../controllers/studyControllers")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 
@@ -62,8 +63,7 @@ router.post("/login", (req, res, next) => {
 
 // handle study registration submit request
 router.post("/studyRegistration", (req, res, next) => {
-    console.log("study registration handler fired")
-    user.createUser(req.body).then((result) => {
+    study.createStudy(req.body).then((result) => {
         if (result.success === "true") {
             console.log(result)
             res.status(200).json(result)

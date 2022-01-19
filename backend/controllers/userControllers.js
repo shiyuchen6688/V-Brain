@@ -1,5 +1,5 @@
 
-const { Sequelize, sequelize, userModel } = require("../models/index")
+const { Sequelize, sequelize, userModel, studyModel } = require("../models/index")
 const Op = Sequelize.Op
 const User = userModel
 const bcrypt = require('bcryptjs')

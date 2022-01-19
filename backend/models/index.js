@@ -12,6 +12,10 @@ const sequelize = new Sequelize(
 
 const userConstructor = require("./user.js")
 userModel = userConstructor(sequelize, Sequelize)
+
+const studyConstructor = require("./study.js")
+studyModel = studyConstructor(sequelize, Sequelize)
+
 // TODO: might need to refactor for different models
 // console.log(sequelize)
-module.exports = { Sequelize, sequelize, userModel }
+module.exports = { Sequelize, sequelize, userModel, studyModel }

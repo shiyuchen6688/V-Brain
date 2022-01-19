@@ -4,6 +4,7 @@ const { stringify } = require("nodemon/lib/utils");
 require("express-async-errors")
 const errorHandlerMiddleware = require("./middlewares/error-handler")
 const user = require("./routes/user.js")
+const study = require("./routes/study.js")
 const auth = require("./auth")
 
 const app = express();
@@ -18,7 +19,7 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
-const { Sequelize, sequelize, userModel } = require("./models/index.js");
+const { Sequelize, sequelize, userModel, studyModel } = require("./models/index.js");
 sequelize.sync();  // Sync all defined models to the DB
 
 app.get("/", (req, res, next) => {
