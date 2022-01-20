@@ -410,10 +410,16 @@ export default class RegisterStudy extends React.Component{
 			biologicalSamples: [],
 			imagingMRIs: [],
 			imagingMRSs: [],
-			imagingPET_RadioTracers:[]
+			imagingPET_RadioTracers:[],
+			multiSitesNames: [],
+			singleSiteName: "",
+			dataCollectionStatusRadioButtons: "",
+			dataCollectionSitesRadioButton: "",
+			
 		};
 
-		// This binding is necessary to make `this` work in the callback    
+		// This binding is necessary to make `this` work in the callback  
+		this.firstMultiSiteName = "";  
 		this.uncheckAll = this.uncheckAll.bind(this);
 		this.submitForm = this.submitForm.bind(this);
 		this.clearForm = this.clearForm.bind(this);
@@ -434,7 +440,9 @@ export default class RegisterStudy extends React.Component{
 		this.handleChangesDataTypes = this.handleChangesDataTypes.bind(this);
 		this.handleChangesBiologicalSamples = this.handleChangesBiologicalSamples.bind(this);
 		this.handleChangesRadiotracer = this.handleChangesRadiotracer.bind(this);
-
+		this.handleChangesOtherRadiotracer = this.handleChangesOtherRadiotracer.bind(this);
+		this.handleChangesDataCollectionSites = this.handleChangesDataCollectionSites.bind(this);
+		this.handleChangesSampleSize = this.handleChangesSampleSize.bind(this);
 
 
 	}
@@ -455,6 +463,29 @@ export default class RegisterStudy extends React.Component{
 		
 		console.log("************ submitForm invoked");
 
+		this.extraRadiotracerList.forEach(element =>{if (element.value !== "")
+			this.state.imagingPET_RadioTracers.push(element.value)});
+
+		this.extraClinicalAreaList.forEach(element =>{if (element.value !== "")
+			this.state.clinicalAreaInSample.push(element.value)});
+
+			
+		this.extraStudyDataTypeList.forEach(element =>{if (element.value !== "")
+			this.state.dataTypesAvailable.push(element.value)});
+
+		this.extraMrsList.forEach(element =>{if (element.value !== "")
+			this.state.imagingMRSs.push(element.value)});
+		
+		if(this.firstMultiSiteName !== "")
+			this.state.multiSitesNames.push(this.firstMultiSiteName);
+		
+			
+		if(this.extraSitesList){this.extraSitesList.forEach(element => {if ((element.value !== ""))
+			this.state.multiSitesNames.push(element.value)});}
+		
+
+			
+		console.log(this.state)
 		//var result = axios.post(this.apiRegisterURL, this.state)
 
 		//console.log(result.data);
@@ -577,9 +608,9 @@ export default class RegisterStudy extends React.Component{
 				document.getElementById(this.radiotracerList[i].id).checked = false;
 			}
 
-			document.getElementById("generalParticipantInformationMinAge").value = "";
-			document.getElementById("generalParticipantInformationMaxAge").value = "";
-			document.getElementById("generalParticipantInformationSex").value = "Male";
+			document.getElementById("participantMinAge").value = "";
+			document.getElementById("participantMaxAge").value = "";
+			document.getElementById("participantSex").value = "Male";
 
 			document.getElementById("studyDataTypeRaceEthnicity").checked = false;
 			document.getElementById("studyDataTypeGender").checked = false;
@@ -656,16 +687,31 @@ export default class RegisterStudy extends React.Component{
 
 	dataCollectionSitesHandle(){
 		console.log("dataCollectionSitesHandle invoked");
-		if(document.getElementById("dataCollectionSitesSingleRadio").checked)
+		if(document.getElementById("dataCollectionSitesSingleRadio").checked){
+
 			document.getElementById("dataCollectionSitesSingleText").disabled = false;
+			document.getElementById("otherSitesDiv").innerHTML = "";
+			// if(this.extraSitesList){
+
+			// 	const myNode = document.getElementById("");
+  			// 	myNode.innerHTML = '';
+			// }
+			// 	this.extraSitesList = [];
+
+		}
+			
 		else
 		{
 			document.getElementById("dataCollectionSitesSingleText").disabled = true;
 			document.getElementById("dataCollectionSitesSingleText").value = "";
 		}
 
-		if(document.getElementById("dataCollectionSitesMultipleRadio").checked)
+		if(document.getElementById("dataCollectionSitesMultipleRadio").checked){
 			document.getElementById("dataCollectionSitesMultipleText").disabled = false;
+			document.getElementById("addOtherSiteNameButton").disabled = false;
+			
+		}
+			
 		else
 		{
 			document.getElementById("dataCollectionSitesMultipleText").disabled = true;
@@ -803,14 +849,14 @@ export default class RegisterStudy extends React.Component{
 
 	addOtherRadiotracerButtonClicked(){
 		
-		this.extraRadiotracerList.push({"text": "", "id": this.getUniqueId("extraRadiotracerList")});
-		console.log(this.extraRadiotracerList);
+		// this.extraRadiotracerList.push({"text": "", "id": this.getUniqueId("extraRadiotracerList")});
+		// console.log(this.extraRadiotracerList);
 
-		var content = "";
-		for(var i =0; i< this.extraRadiotracerList.length;i++){
-			content += "<input type=\"text\" style={this.styles.input}/><br/>";
-		}
-		console.log(content);
+		// var content = "";
+		// for(var i =0; i< this.extraRadiotracerList.length;i++){
+		// 	content += "<input type=\"text\" style={this.styles.input}/><br/>";
+		// }
+		// console.log(content);
 
 		/*
 		var container = document.getElementById("otherRadiotracersDiv");
@@ -828,18 +874,20 @@ export default class RegisterStudy extends React.Component{
 		newItem.setAttribute("borderRadius", 5);
 		newItem.setAttribute("padding", 10);
 		document.getElementById("otherRadiotracersDiv").appendChild(newItem);
+		this.extraRadiotracerList.push(newItem);
 		newItem.focus();
+		
 	}
 	
 	addOtherStudyDataTypeButtonClicked(){
-		this.extraStudyDataTypeList.push({"text": "", "id": this.getUniqueId("extraStudyDataTypeList")});
-		console.log(this.extraStudyDataTypeList);
+		// this.extraStudyDataTypeList.push({"text": "", "id": this.getUniqueId("extraStudyDataTypeList")});
+		// console.log(this.extraStudyDataTypeList);
 
-		var content = "";
-		for(var i =0; i< this.extraStudyDataTypeList.length;i++){
-			content += "<input type=\"text\" style={this.styles.input} /><br/>";
-		}
-		console.log(content);
+		// var content = "";
+		// for(var i =0; i< this.extraStudyDataTypeList.length;i++){
+		// 	content += "<input type=\"text\" style={this.styles.input} /><br/>";
+		// }
+		// console.log(content);
 
 		//document.getElementById("othersStudyDataTypeDiv").innerHTML = content;
 		//document.getElementById("othersStudyDataTypeDiv").style = this.styles.input;
@@ -849,18 +897,19 @@ export default class RegisterStudy extends React.Component{
 		newItem.setAttribute("borderRadius", 5);
 		newItem.setAttribute("padding", 10);
 		document.getElementById("othersStudyDataTypeDiv").appendChild(newItem);
+		this.extraStudyDataTypeList.push(newItem);
 		newItem.focus();
 	}
 
 	addOtherMrsButtonClicked(){
-		this.extraMrsList.push({"text": "", "id": this.getUniqueId("extraMrsList")});
-		console.log(this.extraMrsList);
+		// this.extraMrsList.push({"text": "", "id": this.getUniqueId("extraMrsList")});
+		// console.log(this.extraMrsList);
 
-		var content = "";
-		for(var i =0; i< this.extraMrsList.length;i++){
-			content += "<input type=\"text\" style={this.styles.input} /><br/>";
-		}
-		console.log(content);
+		// var content = "";
+		// for(var i =0; i< this.extraMrsList.length;i++){
+		// 	content += "<input type=\"text\" style={this.styles.input} /><br/>";
+		// }
+		// console.log(content);
 
 		//document.getElementById("otherMrsDiv").innerHTML = content;
 		//document.getElementById("otherMrsDiv").style = this.styles.input;
@@ -871,44 +920,47 @@ export default class RegisterStudy extends React.Component{
 		newItem.setAttribute("borderRadius", 5);
 		newItem.setAttribute("padding", 10);
 		document.getElementById("otherMrsDiv").appendChild(newItem);
+		this.extraMrsList.push(newItem);
 		newItem.focus();
 	}
 
 	
 	addOtherClinicalAreaButtonClicked(){
-		this.extraClinicalAreaList.push({"text": "", "id": this.getUniqueId("extraClinicalAreaList")});
-		console.log(this.extraClinicalAreaList);
+		// this.extraClinicalAreaList.push({"text": "", "id": this.getUniqueId("extraClinicalAreaList")});
+		// console.log(this.extraClinicalAreaList);
 
-		var content = "";
-		for(var i =0; i< this.extraClinicalAreaList.length;i++){
-			content += "<input type=\"text\" style={this.styles.input} /><br/>";
-		}
-		console.log(content);
+		// var content = "";
+		// for(var i =0; i< this.extraClinicalAreaList.length;i++){
+		// 	content += "<input type=\"text\" style={this.styles.input} /><br/>";
+		// }
+		// console.log(content);
 
 		var newItem = document.createElement("input");
 		newItem.setAttribute("width", "100%");
 		newItem.setAttribute("borderRadius", 5);
 		newItem.setAttribute("padding", 10);
 		document.getElementById("otherClinicalAreaDiv").appendChild(newItem);
+		this.extraClinicalAreaList.push(newItem);
 		newItem.focus();
 	}
 
 	
 	addOtherSiteButtonClicked(){
-		this.extraSitesList.push({"text": "", "id": this.getUniqueId("extraSitesList")});
-		console.log(this.extraSitesList);
+		// this.extraSitesList.push({"text": "", "id": this.getUniqueId("extraSitesList")});
+		// console.log(this.extraSitesList);
 
-		var content = "";
-		for(var i =0; i< this.extraSitesList.length;i++){
-			content += "<input type=\"text\" style={this.styles.input} /><br/>";
-		}
-		console.log(content);
+		// var content = "";
+		// for(var i =0; i< this.extraSitesList.length;i++){
+		// 	content += "<input type=\"text\" style={this.styles.input}  /><br/>";
+		// }
+		// console.log(content);
 
 		var newItem = document.createElement("input");
 		newItem.setAttribute("width", "100%");
 		newItem.setAttribute("borderRadius", 5);
 		newItem.setAttribute("padding", 10);
 		document.getElementById("otherSitesDiv").appendChild(newItem);
+		this.extraSitesList.push(newItem);
 		newItem.focus();
 	}
 
@@ -927,7 +979,7 @@ export default class RegisterStudy extends React.Component{
 		
 		//var x = document.getElementById("Funding field").querySelectorAll(".example");
 
-		if((sender.type == "text") ||(sender.type == "email") ||(sender.type == "textarea") || (sender.type == "url") )//fieldName == "fundingNationalFederalAgency")
+		if((sender.type == "text") ||(sender.type == "email") ||(sender.type == "textarea") || (sender.type == "url") || (sender.type == "number") || (sender.type == "select-one"))//fieldName == "fundingNationalFederalAgency")
 		{
 			this.setState({[fieldID]: newValue});
 		}
@@ -1222,6 +1274,32 @@ export default class RegisterStudy extends React.Component{
 		} else {
 			var List = [];
 		}
+
+
+		if(check){
+			
+			List.push(sender.name)        
+			this.setState({
+				imagingPET_RadioTracers: List
+			})
+		console.log(sender.name, " is added to the list ");
+		
+		
+		}
+
+		console.log(this.state);
+
+
+	}
+	handleChangesOtherRadiotracer(e){
+		var sender = document.getElementById(e.target.id)
+		console.log(sender.name, " ...text change..", sender.value , "should be added to list...");
+		var check = sender.checked;
+		if (this.state.imagingPET_RadioTracers) {
+			var List = [...this.state.imagingPET_RadioTracers]
+		} else {
+			var List = [];
+		}
 		if(check){
 			
 			List.push(sender.name)        
@@ -1247,7 +1325,41 @@ export default class RegisterStudy extends React.Component{
 
 
 	}
-	
+	handleChangesDataCollectionSites(e){
+		const fieldID = e.target.id
+        const newValue = e.target.value
+        console.log(fieldID);
+		console.log(newValue);
+		//var sender = document.getElementsByName(e.target.name)
+		
+		var sender = document.getElementById(e.target.id)
+		console.log(e.target.name);
+		console.log(sender.type);
+
+		if(this.state.dataCollectionSitesRadioButton === "dataCollectionSitesSingleRadio"){
+			this.setState({multiSitesNames: []});
+			this.setState({singleSiteName: newValue});
+
+		}
+			
+		else if(this.state.dataCollectionSitesRadioButton === "dataCollectionSitesMultipleRadio"){
+			this.setState({singleSiteName: ""});
+			this.firstMultiSiteName = newValue;
+			console.log("firstMultiSiteName.............",this.firstMultiSiteName);
+		}
+		console.log(this.state);
+
+	}
+
+	handleChangesSampleSize(e){
+		var sender = document.getElementById(e.target.id)
+		
+		this.setState({sampleSize: sender.value});
+		console.log(this.state);
+
+
+
+	}
 	
 
 	render(){
@@ -1356,9 +1468,9 @@ export default class RegisterStudy extends React.Component{
 								
 									<div style={{display: "flex", alignItems:"center",  justifyContent: "space-between"}}>
 										Completed<input id="dataCollectionStatusCompleted" name="dataCollectionStatusRadioButtons" type="radio" style={this.styles.radioButton} onChange={e => { this.handleChanges(e); this.dataCollectionStatusHandle() }}/>
-										<input id="dataCollectionCompletedSampleSize" style={this.styles.input} placeholder="sample size" disabled="disabled"/>
+										<input id="dataCollectionCompletedSampleSize" style={this.styles.input} placeholder="sample size" disabled="disabled" onChange ={this.handleChangesSampleSize}/>
 										Ongoing<input id="dataCollectionStatusOngoing" name="dataCollectionStatusRadioButtons" type="radio" style={this.styles.radioButton} onChange={e => { this.handleChanges(e); this.dataCollectionStatusHandle() }}/>
-										<input id="dataCollectionOngoingSampleSize" style={this.styles.input} placeholder="sample size" disabled="disabled" />
+										<input id="dataCollectionOngoingSampleSize" style={this.styles.input} placeholder="sample size" disabled="disabled" onChange ={this.handleChangesSampleSize}/>
 									</div>
 								</td>
 							</tr>
@@ -1381,12 +1493,12 @@ export default class RegisterStudy extends React.Component{
 							<tr style={{verticalAlign: "top"}}>
 								<td><label type="text" style={{textAlign: "left"}}/>Data collection sites:</td>
 								<td>
-									<label><input type="radio" name="dataCollectionSitesRadioButton" id="dataCollectionSitesSingleRadio" style={this.styles.radioButton} onChange={this.dataCollectionSitesHandle}/>Single site</label>
-									<input id="dataCollectionSitesSingleText" style={this.styles.input} placeholder="Site's name" disabled onChange={this.handleChanges}/>
-									<label><input type="radio" name="dataCollectionSitesRadioButton" id="dataCollectionSitesMultipleRadio" style={this.styles.radioButton} onChange={this.dataCollectionSitesHandle}/>Multiple sites</label>
-									<input id="dataCollectionSitesMultipleText" style={this.styles.input} placeholder="Enter the name of first site" disabled onChange={this.handleChanges}/>
+									<label><input type="radio" name="dataCollectionSitesRadioButton" id="dataCollectionSitesSingleRadio" style={this.styles.radioButton} onChange={e => { this.handleChanges(e); this.dataCollectionSitesHandle()} }/>Single site</label>
+									<input id="dataCollectionSitesSingleText" style={this.styles.input} placeholder="Site's name" disabled onChange={this.handleChangesDataCollectionSites}/>
+									<label><input type="radio" name="dataCollectionSitesRadioButton" id="dataCollectionSitesMultipleRadio" style={this.styles.radioButton} onChange={e => { this.handleChanges(e); this.dataCollectionSitesHandle()} }/>Multiple sites</label>
+									<input id="dataCollectionSitesMultipleText" style={this.styles.input} placeholder="Enter the name of first site" disabled onChange={this.handleChangesDataCollectionSites}/>
 									<div style={{display: "flex", justifyContent: "space-between"}}>
-											<button type="button" style={this.styles.button, {height:"30px", borderRadius: 5, fontSize:15}} onClick={this.addOtherSiteButtonClicked} id="Add Other Site Name Button" >Add another</button>
+											<button type="button" style={this.styles.button, {height:"30px", borderRadius: 5, fontSize:15}} onClick={this.addOtherSiteButtonClicked} id="addOtherSiteNameButton" >Add another</button>
 																				
 										</div>
 										<div style={{width:"50%", padding:10, display:"flex", flexDirection: "column"}} id="otherSitesDiv"></div>
@@ -1442,11 +1554,11 @@ export default class RegisterStudy extends React.Component{
 								<td><label type="text" style={{textAlign: "left", alignItems:"center"}}/>General&nbsp;participant&nbsp;information:</td>
 								<td style={{display: "inline-flex", alignItems:"center",  flexWrap: 'nowrap', justifyContent: "space-between", width:"100%", margin:10}}>
 									<label>Age&nbsp;(years):</label>
-									<input style={this.styles.input} id="generalParticipantInformationMinAge" type="number" min="0" step="1"/> 
+									<input style={this.styles.input} name= "min age" id="participantMinAge" type="number" min="0" step="1" onChange={this.handleChanges}/> 
 									<label >to</label>
-									<input style={this.styles.input} id="generalParticipantInformationMaxAge" type="number" min="0" step="1"/>
+									<input style={this.styles.input} name= "max age" id="participantMaxAge" type="number" min="0" step="1" onChange={this.handleChanges}/>
 									<label  style={{marginLeft: 20, marginRight:10}}>sex&nbsp;(biological):&nbsp;</label>
-									<select name="Sex (biological)" id="generalParticipantInformationSex" style={{borderRadius: 5, width:800, fontSize: "20px"}}>
+									<select name="Sex (biological)" id="participantSex" style={{borderRadius: 5, width:800, fontSize: "20px"}} onChange={this.handleChanges}>
 										<option selected=""></option>
 										<option value="Male">Male</option>
 										<option value="Female">Female</option>
