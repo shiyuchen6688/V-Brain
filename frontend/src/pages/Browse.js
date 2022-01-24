@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Link } from 'react-router-dom'
 import { v4 as uuid } from "uuid"
 
@@ -68,33 +68,52 @@ const filterKeys = ["permission", "status", "design", "species"];
 const filterKeyValueMap = new Map();
 filterKeyValueMap.set("permission", ["Public", "Private", "PI approval"])
 filterKeyValueMap.set("status", ["Completed", "Ongoing"])
-filterKeyValueMap.set("design", ["Cross-sectiona", "Longitudinal", "Observational", "Interventional", "Other"])
+filterKeyValueMap.set("design", ["Cross-sectional", "Longitudinal", "Observational", "Interventional", "Other"])
 filterKeyValueMap.set("species", ["Human", "Non-Human Primate", "Murine", "Other"])
 
 
 
 export default function Browse() {
+    const [keyword, setKeyword] = useState("")
+    const [permission, setPermission] = useState([])
+    const [status, setStatus] = useState([])
+    const [design, setDesign] = useState([])
+    const [species, setSpecies] = useState([])
+
+    const searchBarProps = {
+        onPermissionSelection: setPermission,
+        permissionSelection: permission,
+        onStatusSelection: setStatus,
+        statusSelection: status,
+        onDesignSelection: setDesign,
+        designSelection: design,
+        onSpeciesSelection: setSpecies,
+        speciesSelection: species,
+
+    }
+
+    useEffect(() => {
+        console.log("rerendered")
+    }, [keyword, permission, status, design, species])
+
+
+
     return (
         <div className="ui container">
             <h1>Browse</h1>
             <div className="ui internally celled grid">
                 <div className="row">
                     <div className="sixteen wide column">
-                        <div class="ui form inverted">
-                            <div class="inline field">
-                                <p>Key word search:</p>
-                                <input type="text" placeholder="Key Word" size="50" />
-                            </div>
-                        </div>
+                        <KeyWordSearch onInputChange={setKeyword} />
                     </div>
                 </div>
                 <div className="row">
                     <div className="four wide column">
-                        <SearchBars />
+                        <SearchBars {...searchBarProps} />
                     </div>
 
                     <div className="twelve wide column">
-                        <StudyInfoList />
+                        <StudyInfoList keyword={keyword} permission={permission} status={status} design={design} species={species} />
                     </div>
                 </div>
             </div>
@@ -103,39 +122,73 @@ export default function Browse() {
     )
 }
 
-function SearchBars() {
+function KeyWordSearch(props) {
+    const { onInputChange } = props;
+
+    return (
+        <div className="ui form inverted">
+            <div className="inline field">
+                <p>Key word search:</p>
+                <input type="text" placeholder="Key Word" size="50" onChange={(e) => onInputChange(e.target.value)} />
+            </div>
+        </div>
+    )
+}
+
+function SearchBars(props) {
+    const { onPermissionSelection, permissionSelection, onStatusSelection, statusSelection,
+        onDesignSelection, designSelection, onSpeciesSelection, speciesSelection } = props;
     return (
         <div>
-            <FilterOption filterKey="permission" />
+            <p style={{ fontSize: "62%" }}>Filter By Attribute:</p>
+            <p style={{ fontSize: "55%" }}>(hold cmd or ctrl to select multiple)</p>
+            <div className="ui hidden divider"></div>
 
-            <div class="ui hidden divider"></div><div class="ui hidden divider"></div>
+            <FilterOption filterKey="permission" onSelection={onPermissionSelection} selection={permissionSelection} />
 
-            <FilterOption filterKey="status" />
+            <div className="ui hidden divider"></div><div className="ui hidden divider"></div>
 
-            <div class="ui hidden divider"></div><div class="ui hidden divider"></div>
+            <FilterOption filterKey="status" onSelection={onStatusSelection} selection={statusSelection} />
 
-            <FilterOption filterKey="design" />
+            <div className="ui hidden divider"></div><div className="ui hidden divider"></div>
 
-            <div class="ui hidden divider"></div><div class="ui hidden divider"></div>
+            <FilterOption filterKey="design" onSelection={onDesignSelection} selection={designSelection} />
 
-            <FilterOption filterKey="species" />
+            <div className="ui hidden divider"></div><div className="ui hidden divider"></div>
+
+            <FilterOption filterKey="species" onSelection={onSpeciesSelection} selection={speciesSelection} />
         </div>
     )
 }
 
 
 function FilterOption(props) {
-    const { filterKey } = props;
+    const { filterKey, onSelection, selection } = props;
     const options = filterKeyValueMap.get(filterKey);
+
+    const handleChange = (e) => {
+        var selected = [];
+        for (var option of document.getElementById(`filter-${filterKey}`).options) {
+            if (option.selected) {
+                selected.push(option.value);
+            }
+        }
+        console.log(selected);
+
+        onSelection(selected);
+    }
     return (
         <div>
             <p style={{ fontSize: "60%" }}>{filterKey}</p>
-            <select className="ui dropdown" style={{ fontSize: "65%" }}>
-                <option value="">{filterKey}</option>
+            <select id={`filter-${filterKey}`} name={filterKey} multiple className="ui fluid dropdown" style={{ fontSize: "65%", height: "180%" }} onChange={handleChange}>
+                {/* <option value="">{filterKey}</option> */}
                 {
 
                     options.map((option, i) => {
-                        return <option key={uuid()} value={String(i)}>{option}</option>
+                        if (selection.includes(option.toLowerCase()))
+                            return <option key={uuid()} value={option.toLowerCase()} selected>{option}</option>
+                        else
+                            return <option key={uuid()} value={option.toLowerCase()}>{option}</option>
                     })
                 }
             </select>
@@ -145,14 +198,30 @@ function FilterOption(props) {
 
 }
 
-function StudyInfoList() {
+
+
+function StudyInfoList(props) {
+    const { keyword, permission, status, design, species } = props;
+    console.log(props)
+
     return (
         <div>
             {
-                studies.map((study) => {
-                    study.id = uuid()
-                    return <StudyInfo key={study.id} study={study} />
+                studies.filter((s) => {
+                    const includeKeyWord = JSON.stringify(s).toLowerCase().includes(keyword.toLowerCase());
+                    const matchPermission = permission.length === 0 || (s.permission && permission.includes(s.permission.toLowerCase()));
+                    const matchStatus = status.length === 0 || (s.dataCollectionStatus && status.includes(s.dataCollectionStatus.toLowerCase()));
+                    const matchDesign = design.length === 0 || (s.studyDesign && s.studyDesign.some(item => design.includes(item.toLowerCase())));
+                    const matchSpecies = species.length === 0 || (s.sampleTypeSpecies && s.sampleTypeSpecies.some(item => species.includes(item.toLowerCase())));
+                    console.log(matchDesign)
+                    if (includeKeyWord && matchPermission && matchStatus && matchDesign && matchSpecies) {
+                        return s;
+                    }
                 })
+                    .map((study) => {
+                        study.id = uuid()
+                        return <StudyInfo key={study.id} study={study} />
+                    })
             }
         </div>
     )
