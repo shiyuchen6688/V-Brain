@@ -126,7 +126,7 @@ function KeyWordSearch(props) {
     const { onInputChange } = props;
 
     return (
-        <div className="ui form inverted">
+        <div className="ui form">
             <div className="inline field">
                 <p>Key word search:</p>
                 <input type="text" placeholder="Key Word" size="50" onChange={(e) => onInputChange(e.target.value)} />

@@ -55,7 +55,7 @@ function RegisterForm() {
     return (
         <div className="ui container">
             <h2>User Registration:</h2>
-            <form className="ui form inverted" onSubmit={handleSubmit}>
+            <form className="ui form" onSubmit={handleSubmit}>
                 <div className="field">
                     <label>Last Name</label>
                     <input type="text" name="lastname" value={inputs.lastname || ""} onChange={handleChange} />

@@ -12,6 +12,7 @@ import VBrainSequences from "./pages/VBrainSequences"
 import ResetPassword from "./pages/ResetPassword"
 import Register from "./pages/Register"
 import UserHome from "./pages/UserHome"
+import ContactAdmin from "./pages/ContactAdmin"
 import './App.css';
 import React from 'react';
 
@@ -27,6 +28,7 @@ function App() {
             <Route path="/tutorial" element={<Tutorial />} />
             <Route path="/links" element={<Links />} />
             <Route path="/accuistition" element={<Accuisition />} />
+            <Route path="/contact-admin" element={<ContactAdmin />} />
             <Route path="/browse" element={<Browse />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/vbrain-sequences" element={<VBrainSequences />} />

@@ -3,7 +3,7 @@ import vbrainLogoTiny from "../assets/logo_vbrain_tiny.png"
 
 function Navbar() {
     return (
-        <div class="ui eight item menu" style={{ width: "100%", backgroundColor: "lightgray" }}>
+        <div className="ui eight item menu" style={{ width: "100%", backgroundColor: "lightgray" }}>
             <img src={vbrainLogoTiny} />
             <NavItem className="item" link="/" name="Home" />
             <NavItem className="item" link="/about" name="About Vbrain" />

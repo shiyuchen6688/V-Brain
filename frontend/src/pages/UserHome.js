@@ -41,7 +41,7 @@ function FullName(props) {
         setUserFullName(`${user.firstname} ${user.lastname}`)
     }, [])
     return (
-        <h1 className="ui dividing header inverted">{userFullName}</h1>
+        <h1 className="ui dividing header">{userFullName}</h1>
     )
 }
 
@@ -50,10 +50,10 @@ function UserProfile() {
     return (
         <div>
             <UserStudies />
-            <div class="ui divider"></div>
-            <div class="ui buttons">
+            <div className="ui divider"></div>
+            <div className="ui buttons">
                 <Link to="create-study" className="ui button">Create Study</Link>
-                <div class="or"></div>
+                <div className="or"></div>
                 <Link to="create-project" className="ui button">Create Project</Link>
             </div>
 

@@ -5,7 +5,7 @@ import axios from "axios"
 function Login() {
     return (
         <div>
-            <h1 className="ui inverted header">Login or Register here:</h1>
+            <h1 className="ui header">Login or Register here:</h1>
             <LoginForm />
         </div>
     )
@@ -59,7 +59,7 @@ function LoginForm() {
     return (
         <div>
             <div>
-                <form className="ui inverted massive form" onSubmit={handleSubmit}>
+                <form className="ui massive form" onSubmit={handleSubmit}>
                     <div className="field">
                         <label>Username: </label>
                         <input type="text" name="email" value={inputs.email || ""} onChange={handleChange} />
@@ -71,18 +71,18 @@ function LoginForm() {
                     </div>
 
                     <input type="submit" className="ui button" />
-					
+
                 </form>
             </div>
 
-            <div class="ui divider"></div>
+            <div className="ui divider"></div>
 
             <div>
                 <label>Forget your password?</label>
                 <Link to="/reset-password" className="ui button" style={{ marginTop: "1em", marginLeft: "1em" }}>Reset Password</Link>
             </div>
 
-            <div class="ui divider"></div>
+            <div className="ui divider"></div>
 
             <div>
                 <label>Have not registered yet?</label>

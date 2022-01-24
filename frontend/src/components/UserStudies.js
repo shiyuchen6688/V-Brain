@@ -33,7 +33,7 @@ function StudyList(props) {
 
     return (
         <div>
-            <div class="ui vertical buttons">
+            <div className="ui vertical buttons">
 
                 {
                     studies.map((study) => {
