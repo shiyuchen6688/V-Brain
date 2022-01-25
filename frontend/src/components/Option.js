@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 
 
 function Option(props) {
-    const { image, name } = props
+    const { image, name, route } = props
     return (
         <div>
-            <Link to={"/" + name} className="ui button" style={{ height: "100%" }}>
+            <Link to={"/" + route} className="ui button" style={{ height: "100%" }}>
                 <img className="ui medium image" src={image} alt={name} className="ui small image"></img>
                 <Description name={name} />
             </Link>

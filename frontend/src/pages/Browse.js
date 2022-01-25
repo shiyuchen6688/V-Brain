@@ -201,7 +201,7 @@ function StudyInfoList(props) {
 
     return (
         <div>
-            <table className="ui celled table">
+            <table className="ui celled table" style={{ fontSize: "70%" }}>
                 <thead>
                     <tr><th>V-Brain Database</th>
                         <th>Access</th>
