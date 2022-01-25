@@ -74,7 +74,6 @@ filterKeyValueMap.set("species", ["Human", "Non-Human Primate", "Murine", "Other
 
 
 export default function Browse() {
-    const [keyword, setKeyword] = useState("")
     const [permission, setPermission] = useState([])
     const [status, setStatus] = useState([])
     const [design, setDesign] = useState([])
@@ -94,7 +93,7 @@ export default function Browse() {
 
     useEffect(() => {
         console.log("rerendered")
-    }, [keyword, permission, status, design, species])
+    }, [permission, status, design, species])
 
 
 
@@ -102,18 +101,14 @@ export default function Browse() {
         <div className="ui container">
             <h1>Browse</h1>
             <div className="ui internally celled grid">
-                <div className="row">
-                    <div className="sixteen wide column">
-                        <KeyWordSearch onInputChange={setKeyword} />
-                    </div>
-                </div>
+
                 <div className="row">
                     <div className="four wide column">
                         <SearchBars {...searchBarProps} />
                     </div>
 
                     <div className="twelve wide column">
-                        <StudyInfoList keyword={keyword} permission={permission} status={status} design={design} species={species} />
+                        <StudyInfoList permission={permission} status={status} design={design} species={species} />
                     </div>
                 </div>
             </div>
@@ -122,18 +117,18 @@ export default function Browse() {
     )
 }
 
-function KeyWordSearch(props) {
-    const { onInputChange } = props;
+// function KeyWordSearch(props) {
+//     const { onInputChange } = props;
 
-    return (
-        <div className="ui form">
-            <div className="inline field">
-                <p>Key word search:</p>
-                <input type="text" placeholder="Key Word" size="50" onChange={(e) => onInputChange(e.target.value)} />
-            </div>
-        </div>
-    )
-}
+//     return (
+//         <div className="ui form">
+//             <div className="inline field">
+//                 <p>Key word search:</p>
+//                 <input type="text" placeholder="Key Word" size="50" onChange={(e) => onInputChange(e.target.value)} />
+//             </div>
+//         </div>
+//     )
+// }
 
 function SearchBars(props) {
     const { onPermissionSelection, permissionSelection, onStatusSelection, statusSelection,
@@ -199,33 +194,69 @@ function FilterOption(props) {
 }
 
 
-
+// table of all the studies after filtering
 function StudyInfoList(props) {
     const { keyword, permission, status, design, species } = props;
     console.log(props)
 
     return (
         <div>
-            {
-                studies.filter((s) => {
-                    const includeKeyWord = JSON.stringify(s).toLowerCase().includes(keyword.toLowerCase());
-                    const matchPermission = permission.length === 0 || (s.permission && permission.includes(s.permission.toLowerCase()));
-                    const matchStatus = status.length === 0 || (s.dataCollectionStatus && status.includes(s.dataCollectionStatus.toLowerCase()));
-                    const matchDesign = design.length === 0 || (s.studyDesign && s.studyDesign.some(item => design.includes(item.toLowerCase())));
-                    const matchSpecies = species.length === 0 || (s.sampleTypeSpecies && s.sampleTypeSpecies.some(item => species.includes(item.toLowerCase())));
-                    console.log(matchDesign)
-                    if (includeKeyWord && matchPermission && matchStatus && matchDesign && matchSpecies) {
-                        return s;
+            <table className="ui celled table">
+                <thead>
+                    <tr><th>V-Brain Database</th>
+                        <th>Access</th>
+                        <th>V-Brain Registration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        // filter studies base on 
+                        studies.filter((s) => {
+                            const matchPermission = permission.length === 0 || (s.permission && permission.includes(s.permission.toLowerCase()));
+                            const matchStatus = status.length === 0 || (s.dataCollectionStatus && status.includes(s.dataCollectionStatus.toLowerCase()));
+                            const matchDesign = design.length === 0 || (s.studyDesign && s.studyDesign.some(item => design.includes(item.toLowerCase())));
+                            const matchSpecies = species.length === 0 || (s.sampleTypeSpecies && s.sampleTypeSpecies.some(item => species.includes(item.toLowerCase())));
+                            console.log(matchDesign)
+                            if (matchPermission && matchStatus && matchDesign && matchSpecies) {
+                                return s;
+                            }
+                        })
+                            .map((study) => {
+                                study.id = uuid()
+                                return <StudySummaryInfo key={study.id} study={study} />
+                            })
                     }
-                })
-                    .map((study) => {
-                        study.id = uuid()
-                        return <StudyInfo key={study.id} study={study} />
-                    })
-            }
+                </tbody>
+            </table>
         </div>
     )
 
+}
+
+function StudySummaryInfo(props) {
+    let { tittle, access, permission, registration } = props.study
+    access = permission
+    if (permission === "Public") {
+        registration = "Not required";
+    } else if (permission === "Conditional on PI approval") {
+        registration = "Required";
+    } else {
+        registration = "Blocked";
+    }
+    let studyNameInURL = tittle.toLowerCase().replaceAll(" ", "-");
+    return (
+        <tr>
+            <td data-label="V-Brain Database">
+                <Link
+                    to={`/studies/${studyNameInURL}`}
+                    state={{ study: props.study }}
+                >
+                    {tittle}</Link>
+            </td>
+            <td data-label="Access">{access}</td>
+            <td data-label="V-Brain Registration">{registration}</td>
+        </tr>
+    )
 }
 
 // array contain [key, value] pairs, key is column name in database, value is tittle of that attribute to display to users
@@ -245,107 +276,64 @@ const columnTittleArray = [
 
 const columnTittleMap = new Map(columnTittleArray)
 
-function StudyInfo(props) {
-    // TODO: these are inputs I need to double check: radiotracerList, StudyDataTypes
-    const { tittle, abbreviation, principalInvestigatorName, principalInvestigatorEmail, permission, funding, description,
-        studyURL, dataCollectionStatus, sampleSize, studyDesign, dataCollectionSites, sampleTypeSpecies, healthyIndivisualInSample,
-        clinicalAreaInSample, participantMinAge, participantMaxAge, participantSex, dataTypesAvailable, biologicalSamples,
-        imagingMRIs, imagingPETs, imagingMRSs } = props.study
 
-    console.log(props)
+// function StudyDetailInfo(props) {
+//     // TODO: these are inputs I need to double check: radiotracerList, StudyDataTypes
+//     const { tittle, abbreviation, principalInvestigatorName, principalInvestigatorEmail, permission, funding, description,
+//         studyURL, dataCollectionStatus, sampleSize, studyDesign, dataCollectionSites, sampleTypeSpecies, healthyIndivisualInSample,
+//         clinicalAreaInSample, participantMinAge, participantMaxAge, participantSex, dataTypesAvailable, biologicalSamples,
+//         imagingMRIs, imagingPETs, imagingMRSs } = props.study
+
+//     console.log(props)
 
 
-    console.log(isDefined(tittle))
-    return (
-        <div className="ui piled segment" style={{ color: "black" }}>
-            {isDefined(tittle) ? <h3>{tittle}</h3> : null}
-            <table className="ui celled table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {isDefined(tittle) ? <StudyAttribute columnName="tittle" value={tittle} /> : null}
-                    {isDefined(abbreviation) ? <StudyAttribute columnName="abbreviation" value={abbreviation} /> : null}
-                    {isDefined(funding) ? <StudyAttribute columnName="funding" value={funding} /> : null}
-                    {isDefined(description) ? <StudyAttribute columnName="description" value={description} /> : null}
-                    {isDefined(studyURL) ? <StudyAttribute columnName="studyURL" value={studyURL} /> : null}
-                    {isDefined(dataCollectionStatus) ? <StudyAttribute columnName="dataCollectionStatus" value={dataCollectionStatus} /> : null}
-                    {isDefined(sampleSize) ? <StudyAttribute columnName="sampleSize" value={sampleSize} /> : null}
-                    {isDefined(studyDesign) ? <StudyAttribute columnName="studyDesign" value={studyDesign} /> : null}
-                    {isDefined(dataCollectionSites) ? <StudyAttribute columnName="dataCollectionSites" value={dataCollectionSites} /> : null}
-                    {isDefined(sampleTypeSpecies) ? <StudyAttribute columnName="sampleTypeSpecies" value={sampleTypeSpecies} /> : null}
-                    {isDefined(healthyIndivisualInSample) ? <StudyAttribute columnName="healthyIndivisualInSample" value={healthyIndivisualInSample} /> : null}
-                    {isDefined(clinicalAreaInSample) ? <StudyAttribute columnName="clinicalAreaInSample" value={clinicalAreaInSample} /> : null}
-                    {isDefined(participantMinAge) ? <StudyAttribute columnName="participantMinAge" value={participantMinAge} /> : null}
-                    {isDefined(participantMaxAge) ? <StudyAttribute columnName="participantMaxAge" value={participantMaxAge} /> : null}
-                    {isDefined(participantSex) ? <StudyAttribute columnName="participantSex" value={participantSex} /> : null}
-                    {isDefined(dataTypesAvailable) ? <StudyAttribute columnName="dataTypesAvailable" value={dataTypesAvailable} /> : null}
-                    {isDefined(biologicalSamples) ? <StudyAttribute columnName="biologicalSamples" value={biologicalSamples} /> : null}
-                    {isDefined(imagingMRIs) ? <StudyAttribute columnName="imagingMRIs" value={imagingMRIs} /> : null}
-                    {isDefined(imagingPETs) ? <StudyAttribute columnName="imagingPETs" value={imagingPETs} /> : null}
-                    {isDefined(imagingMRSs) ? <StudyAttribute columnName="imagingMRSs" value={imagingMRSs} /> : null}
-                    {isDefined(principalInvestigatorName) ? <StudyAttribute columnName="principalInvestigatorName" value={principalInvestigatorName} /> : null}
-                    {isDefined(principalInvestigatorEmail) ? <StudyAttribute columnName="principalInvestigatorEmail" value={principalInvestigatorEmail} /> : null}
-                    {isDefined(permission) ? <StudyAttribute columnName="permission" value={permission} /> : null}
-                </tbody>
-            </table>
-            {isDefined(permission) ? <PermissionAttribute value={permission} /> : null}
-        </div>
-    )
+//     console.log(isDefined(tittle))
+//     return (
+//         <div className="ui piled segment">
+//             {isDefined(tittle) ? <h3>{tittle}</h3> : null}
+//             <table className="ui celled table">
+//                 <thead>
+//                     <tr>
+//                         <th>Name</th>
+//                         <th>Value</th>
+//                     </tr>
+//                 </thead>
+//                 <tbody>
+//                     {isDefined(tittle) ? <StudyAttribute columnName="tittle" value={tittle} /> : null}
+//                     {isDefined(abbreviation) ? <StudyAttribute columnName="abbreviation" value={abbreviation} /> : null}
+//                     {isDefined(funding) ? <StudyAttribute columnName="funding" value={funding} /> : null}
+//                     {isDefined(description) ? <StudyAttribute columnName="description" value={description} /> : null}
+//                     {isDefined(studyURL) ? <StudyAttribute columnName="studyURL" value={studyURL} /> : null}
+//                     {isDefined(dataCollectionStatus) ? <StudyAttribute columnName="dataCollectionStatus" value={dataCollectionStatus} /> : null}
+//                     {isDefined(sampleSize) ? <StudyAttribute columnName="sampleSize" value={sampleSize} /> : null}
+//                     {isDefined(studyDesign) ? <StudyAttribute columnName="studyDesign" value={studyDesign} /> : null}
+//                     {isDefined(dataCollectionSites) ? <StudyAttribute columnName="dataCollectionSites" value={dataCollectionSites} /> : null}
+//                     {isDefined(sampleTypeSpecies) ? <StudyAttribute columnName="sampleTypeSpecies" value={sampleTypeSpecies} /> : null}
+//                     {isDefined(healthyIndivisualInSample) ? <StudyAttribute columnName="healthyIndivisualInSample" value={healthyIndivisualInSample} /> : null}
+//                     {isDefined(clinicalAreaInSample) ? <StudyAttribute columnName="clinicalAreaInSample" value={clinicalAreaInSample} /> : null}
+//                     {isDefined(participantMinAge) ? <StudyAttribute columnName="participantMinAge" value={participantMinAge} /> : null}
+//                     {isDefined(participantMaxAge) ? <StudyAttribute columnName="participantMaxAge" value={participantMaxAge} /> : null}
+//                     {isDefined(participantSex) ? <StudyAttribute columnName="participantSex" value={participantSex} /> : null}
+//                     {isDefined(dataTypesAvailable) ? <StudyAttribute columnName="dataTypesAvailable" value={dataTypesAvailable} /> : null}
+//                     {isDefined(biologicalSamples) ? <StudyAttribute columnName="biologicalSamples" value={biologicalSamples} /> : null}
+//                     {isDefined(imagingMRIs) ? <StudyAttribute columnName="imagingMRIs" value={imagingMRIs} /> : null}
+//                     {isDefined(imagingPETs) ? <StudyAttribute columnName="imagingPETs" value={imagingPETs} /> : null}
+//                     {isDefined(imagingMRSs) ? <StudyAttribute columnName="imagingMRSs" value={imagingMRSs} /> : null}
+//                     {isDefined(principalInvestigatorName) ? <StudyAttribute columnName="principalInvestigatorName" value={principalInvestigatorName} /> : null}
+//                     {isDefined(principalInvestigatorEmail) ? <StudyAttribute columnName="principalInvestigatorEmail" value={principalInvestigatorEmail} /> : null}
+//                     {isDefined(permission) ? <StudyAttribute columnName="permission" value={permission} /> : null}
+//                 </tbody>
+//             </table>
+//             {isDefined(permission) ? <PermissionAttribute value={permission} /> : null}
+//         </div>
+//     )
 
-}
+// }
 
-function isDefined(variable) {
-    return Boolean(variable)
-}
 
-/**
- * Input:
- * columnName: name of the column in the database
- * value: value of the column in database
- * Output:
- * Return div describe current attribute
- */
-function StudyAttribute(props) {
-    let { columnName, value } = props
-    if (value === true)
-        value = "Yes"
-    if (Array.isArray(value))
-        value = value.join(", ")
 
-    return (
-        // <section className="ui">
-        //     <p>{`${columnTittleMap.get(columnName)}: ${value}`}</p>
-        //     {(columnName === "permission") ? <PermissionAttribute permissionLevel={value} /> : null}
-        // </section>
-        <tr>
-            <td data-label="Name">{columnTittleMap.get(columnName)}</td>
-            <td data-label="Value">{value}</td>
-        </tr>
-    )
 
-}
 
-function PermissionAttribute(props) {
-    const { value: permissionLevel } = props
-    if (permissionLevel === "Public") {
-        return <button className="ui button green">Add to Your Study Home Page</button> // TODO: button to add this study to user's study List
-    } else if (permissionLevel === "Private") {
-        return (
-            <div className="ui message red">
-                <p>You can't access this study since it's a public study</p>
-            </div>
-        );
-    }
-    else {
-        return (
-            <div className="ui message yellow">
-                <p>To access this study, you need approval from the principal investigator by sending email to the email address above</p>
-            </div>
-        );
-    }
-
-}
+export {
+    columnTittleArray, columnTittleMap
+} 

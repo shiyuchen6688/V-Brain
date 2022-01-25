@@ -1,3 +1,6 @@
+/**
+ * User can view and potentially modify their study here base on permission
+ */
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, Routes, Route } from "react-router-dom"
 import UserStudies from "../components/UserStudies"

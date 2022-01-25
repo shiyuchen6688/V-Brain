@@ -7,42 +7,50 @@ import SearchDataCatalogueLogo from "../assets/Search-Data-Catalogue.jpg";
 import SearchVBrainDatabase from "../assets/Search-V-Brain-Databases.jpg";
 import TutorialLogo from "../assets/Tutorial.jpg";
 import VBrainAcquisitionSequence from "../assets/VBrain-Acquisition-Sequences.jpg";
+import LoginRegisterLogo from "../assets/login-register-icon.png";
 
 function OptionList() {
     const optionList = [
         {
             "image": SearchVBrainDatabase,
             "name": "Browse V-Brain Databases",
+            "route": "browse",
             "id": uuid()
         },
         {
             "image": SearchDataCatalogueLogo,
             "name": "Browse V-Brain Data Catalogue",
+            "route": "browse-data",
             "id": uuid()
         },
         {
             "image": VBrainAcquisitionSequence,
             "name": "V-Brain Neuroimaging Acquisition Sequences",
+            "route": "accuistition",
             "id": uuid()
         },
         {
             "image": NewStudyRegistrationLogo,
             "name": "New Study Registration and Set-up",
+            "route": "login", // TODO: 1, if user login, direct to register. 2, if no login, goto login
             "id": uuid()
         },
         {
             "image": TutorialLogo,
             "name": "Tutorial",
+            "route": "tutorial",
             "id": uuid()
         },
         {
             "image": ResourcesLogo,
             "name": "Resources",
+            "route": "resources",
             "id": uuid()
         },
         {
-            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Noto_Emoji_KitKat_263a.svg/1024px-Noto_Emoji_KitKat_263a.svg.png",
+            "image": LoginRegisterLogo,
             "name": "Login/Register",
+            "route": "login",
             "id": uuid()
         }
     ]

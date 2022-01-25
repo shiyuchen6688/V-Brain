@@ -13,6 +13,7 @@ import ResetPassword from "./pages/ResetPassword"
 import Register from "./pages/Register"
 import UserHome from "./pages/UserHome"
 import ContactAdmin from "./pages/ContactAdmin"
+import StudyDetail from "./pages/StudyDetail"
 import './App.css';
 import React from 'react';
 
@@ -35,6 +36,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/user-profile/:email/*" element={<UserHome />} />
+            <Route path="/studies/:study/*" element={<StudyDetail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
