@@ -22,7 +22,6 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true,
         },
         funding: {
-            //type: Sequelize.??? (would be a list),
             type: Sequelize.STRING,
             allowNull: true,
         },
@@ -43,17 +42,14 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true,
         },
         studyDesign: {
-            //type: Sequelize.??? (would be a list),
             type: Sequelize.STRING,
             allowNull: true,
         },
         dataCollectionSites: {
-            //type: Sequelize.??? (would be a list),
             type: Sequelize.STRING,
             allowNull: true,
         },
         sampleTypeSpecies: {
-            //type: Sequelize.??? (would be a list),
             type: Sequelize.STRING,
             allowNull: true,
         },
@@ -62,7 +58,6 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true,
         },
         clinicalAreaInSample: {
-            //type: Sequelize.??? (would be a list),
             type: Sequelize.STRING,
             allowNull: true,
         }, 
@@ -79,27 +74,22 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true,
         },
         dataTypesAvailable:{
-            //type: Sequelize.??? (would be a list),
             type: Sequelize.STRING,
             allowNull: true,
         }, 
         biologicalSamples: {
-            //type: Sequelize.??? (would be a list),
             type: Sequelize.STRING,
             allowNull: true,
         }, 
         imagingMRIs:  {
-            //type: Sequelize.??? (would be a list),
             type: Sequelize.STRING,
             allowNull: true,
         }, 
         imagingPETs:  {
-            //type: Sequelize.??? (would be a list),
             type: Sequelize.STRING,
             allowNull: true,
         }, 
         imagingMRSs:  {
-            //type: Sequelize.??? (would be a list),
             type: Sequelize.STRING,
             allowNull: true,
         }, 
